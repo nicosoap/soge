@@ -98,4 +98,32 @@ angular.module('starter.controllers', [])
         });
 
     })
+    .controller('ProductController', function(){
+        $http.get("https://www.unitsupload.com/api/api.php?page=product&isin=" + getUrlVars()["isin"] ).then( function(response) {
+
+            var data2 = [];
+            for (var i in response.data) {
+                data2.push({
+                    isin: response.data[i].isin,
+                    nom: response.data[i].nom,
+                    assetclass: response.data[i].assetclass,
+                    type: response.data[i].type,
+                    pea: response.data[i].pea,
+                    cto: response.data[i].cto,
+                    zone: response.data[i].zone,
+                    devise: response.data[i].devise,
+                    management: response.data[i].management,
+                    description: response.data[i].description,
+                });
+            }
+        });
+
+        var ctx = document.getElementById("accountChart").getContext("2d");
+        var accountChart = new Chart(ctx).Pie(data, {
+            animateScale: true,
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
+            multiTooltipTemplate: "<%= value %> €"
+        });
+
+    })
 ;
