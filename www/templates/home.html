@@ -1,6 +1,42 @@
 <ion-view view-title="Homepage">
+    <ion-nav-title></ion-nav-title>
     <ion-content class="padding">
-        <h1>Dashboard</h1>
-        <canvas id="homeChart" width="400" height="400"></canvas>
+        <div class="row">
+            <div class="col text-center">
+                <h1>
+                    Resumé de votre compte
+                    <br/>
+                    <small>Depuis début 2016 <i class="fa fa-caret-down"></i></small>
+                </h1>
+                <div class="chartPercentage">
+                    <canvas id="homeChart" width="100%" height="100%"></canvas>
+                    <p class="percentage" ng-class="(perf < 0) ? 'red' : '' "><strong ng-show="perf > 0">+</strong>{{ perf }} %<br/><span class="small"> perf. totale</span>
+                    </p>
+                </div>
+                <p ng-bind-html="homeChartLegend"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2 class="money">
+                    {{ finalAmount | currency : "" }} &euro;
+                    <br/>
+                    <small>valorisation au <strong>16/02/2016</strong></small>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="">
+                    Synthèse par classe d'actifs
+                </h2>
+                <div class="chartPercentage">
+                    <canvas id="homeChartCategories" width="100%" height="100%"></canvas>
+                    <p class="percentage" ng-class="(perf < 0) ? 'red' : '' "><strong ng-show="perf > 0">+</strong>{{ perf }} %<br/><span class="small"> perf. totale</span>
+                    </p>
+                </div>
+                <p ng-bind-html="homeChartCategoriesLegend"></p>
+            </div>
+        </div>
     </ion-content>
 </ion-view>

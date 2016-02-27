@@ -5,7 +5,6 @@ in ionic's _variables.scss file.
 For example, you might change some of the default colors:
 
 $light:                           #fff !default;
-$stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
 $calm:                            #11c1f3 !default;
 $balanced:                        #33cd5f !default;
@@ -15,9 +14,129 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+
+$stable:                          #3cc78e;
+$dark: #7f7f7f;
+
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+body, html
+{
+  font-family: 'Ubuntu', sans-serif !important;
+  color: $dark;
+}
+
+h1, h2, h3, h4, h5
+{
+  color: $dark;
+  small
+  {
+    font-size: 14px;
+    color: $calm;
+  }
+}
+
+h1
+{
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+h2
+{
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+.bar .button.button-clear, .bar button.button-clear
+{
+  color: #ffffff !important;
+}
+
+.bar-stable
+{
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 10px;
+}
+
+.view-container
+{
+  background: #f6f8f7;
+}
+
+.chartPercentage
+{
+  position: relative;
+
+  .percentage
+  {
+    color: $stable;
+    font-size: 4vh;
+    font-weight: bold;
+    position: absolute;
+    left: 34%;
+    top: 43%;
+
+    &.red
+    {
+      color: $assertive !important;
+    }
+
+    .small
+    {
+      font-size: 3vh;
+      color: $dark;
+      text-align: right;
+      text-indent: 2vw;
+    }
+  }
+}
+
+.money-list
+{
+  .money
+  {
+    margin-top: 10px;
+
+    &.red
+    {
+      color: $assertive !important;
+    }
+  }
+}
+
+.money
+{
+  font-size: 30px;
+  color: $stable !important;
+  text-align: center;
+  font-weight: bold;
+
+  small
+  {
+    color: lighten( $stable, 20% );
+  }
+}
+
+.doughnut-legend
+{
+  margin: 5px 0;
+  li
+  {
+    float: left;
+    width: 50%;
+    span{
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+
+    }
+  }
+}

@@ -1,0 +1,58 @@
+<ion-view view-title="Homepage">
+    <ion-nav-title></ion-nav-title>
+    <ion-content class="padding">
+        <div class="row">
+            <div class="col text-center">
+                <h1>
+                    Assurance vie
+                    <!--<br/>-->
+                    <!--<small>Depuis début 2016 <i class="fa fa-caret-down"></i></small>-->
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ion-list class="money-list">
+                    <ion-item>
+                        Perf. depuis le début de l'année
+                        <br/>
+                        <span class="pull-right money">+15%</span>
+                    </ion-item>
+                    <ion-item>
+                        Risques comparé au référentiel
+                        <br/>
+                        <span class="pull-right money red">8/10</span>
+                    </ion-item>
+                    <ion-item>
+                        Note de performance
+                        <br/>
+                        <span class="pull-right money">10/10</span>
+                    </ion-item>
+                </ion-list>
+                <!--<h2 class="money">-->
+                    <!--{{ finalAmount | currency : "" }} &euro;-->
+                    <!--<br/>-->
+                    <!--<small>valorisation au <strong>16/02/2016</strong></small>-->
+                <!--</h2>-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <canvas id="accountChart" width="100%" height="100%"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="">
+                    Synthèse par classe d'actifs
+                </h2>
+                <div class="chartPercentage">
+                    <canvas id="homeChartCategories" width="100%" height="100%"></canvas>
+                    <p class="percentage" ng-class="(perf < 0) ? 'red' : '' "><strong ng-show="perf > 0">+</strong>{{ perf }} %<br/><span class="small"> perf. totale</span>
+                    </p>
+                </div>
+                <p ng-bind-html="homeChartCategoriesLegend"></p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

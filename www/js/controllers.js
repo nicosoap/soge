@@ -1,12 +1,74 @@
 angular.module('starter.controllers', [])
 
-.controller('AppController', function($scope, $ionicModal, $timeout) {
+    .controller('AppController', function($scope, $ionicModal, $timeout) {
 
 
-})
+    })
 
-.controller('HomeController', function($scope, $http, $sgData)
+    .controller('HomeController', function($scope, $http, $sgData, $rootScope, $sce)
     {
+        $rootScope.userId = 6;
+
+        var data = [];
+        var colors = ["#F7464A", "#46BFBD", "#FDB45C"];
+        $scope.perf = 0;
+        $scope.finalAmount = 0;
+        $scope.homeChartLegend = "";
+        $scope.homeChartCategoriesLegend = "";
+
+        $http.get("https://www.unitsupload.com/api/api.php?page=account&clientid=" + $rootScope.userId).then( function(response){
+
+            var initialAmount = 0;
+            for(var i in response.data)
+            {
+                initialAmount += parseInt(response.data[i].account_initialamount);
+                $scope.finalAmount += parseInt(response.data[i].account_finalamount);
+                data.push({
+                    label: response.data[i].account_type,
+                    value: parseInt(response.data[i].account_finalamount),
+                    color: colors[i]
+                });
+            }
+            $scope.perf = (($scope.finalAmount - initialAmount) / initialAmount * 100).toFixed(2);
+
+            var ctx = document.getElementById("homeChart").getContext("2d");
+            var homeChart = new Chart(ctx).Doughnut(data, {
+                animateScale: false,
+                tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
+                multiTooltipTemplate: "<%= value %> €"
+
+            });
+
+            $scope.homeChartLegend = $sce.trustAsHtml(homeChart.generateLegend());
+        }, function(response){
+            console.log("Error");
+        });
+
+        // Getting the second chart
+        $http.get("https://www.unitsupload.com/api/api.php?page=account_track_record_composition_categories&id=" + $rootScope.userId).then( function(response){
+
+            var data2 = [];
+            for(var i in response.data)
+            {
+                data2.push({
+                    label: response.data[i].key,
+                    value: parseInt(response.data[i].value),
+                    color: colors[i]
+                });
+            }
+            var ctx = document.getElementById("homeChartCategories").getContext("2d");
+            var homeChartCategories = new Chart(ctx).Doughnut(data2, {
+                animateScale: true,
+                tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
+                multiTooltipTemplate: "<%= value %> €"
+            });
+            $scope.homeChartCategoriesLegend = $sce.trustAsHtml(homeChartCategories.generateLegend());
+        }, function(response){
+            console.log("Error chart 2");
+        });
+
+    })
+    .controller('AccountController', function(){
         var data = [
             {
                 value: 300,
@@ -28,11 +90,12 @@ angular.module('starter.controllers', [])
             }
         ];
 
-        var clientData = $sgData.getClientInfoById(1);
-
-
-        var ctx = document.getElementById("homeChart").getContext("2d");
-        var myNewChart = new Chart(ctx).Doughnut(data, {
-            animateScale: true
+        var ctx = document.getElementById("accountChart").getContext("2d");
+        var accountChart = new Chart(ctx).Pie(data, {
+            animateScale: true,
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
+            multiTooltipTemplate: "<%= value %> €"
         });
-});
+
+    })
+;
