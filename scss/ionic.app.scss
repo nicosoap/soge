@@ -124,7 +124,7 @@ h2
   }
 }
 
-.doughnut-legend
+.doughnut-legend, .line-legend, .pie-legend
 {
   margin: 5px 0;
   li
@@ -138,5 +138,44 @@ h2
       margin-right: 5px;
 
     }
+  }
+}
+
+.button
+{
+  color: #ffffff;
+
+  &.active
+  {
+    color: $dark;
+  }
+}
+
+#accountPerformanceChart
+{
+  margin-left: -15px;
+}
+
+.item-avatar
+{
+
+  padding-left: 10px;
+
+  i
+  {
+    font-size: 30px;
+    float: left;
+    display: block;
+    color: $stable;
+    margin: 0 10px 0;
+  }
+  i.red
+  {
+    color: $assertive !important;
+  }
+  
+  .money
+  {
+    font-size: 15px;
   }
 }

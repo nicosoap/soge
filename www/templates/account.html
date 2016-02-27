@@ -19,7 +19,7 @@
                         <span class="pull-right money">+15%</span>
                     </ion-item>
                     <ion-item>
-                        Risques comparé au référentiel
+                        Note de risque11
                         <br/>
                         <span class="pull-right money red">8/10</span>
                     </ion-item>
@@ -30,28 +30,78 @@
                     </ion-item>
                 </ion-list>
                 <!--<h2 class="money">-->
-                    <!--{{ finalAmount | currency : "" }} &euro;-->
-                    <!--<br/>-->
-                    <!--<small>valorisation au <strong>16/02/2016</strong></small>-->
+                <!--{{ finalAmount | currency : "" }} &euro;-->
+                <!--<br/>-->
+                <!--<small>valorisation au <strong>16/02/2016</strong></small>-->
                 <!--</h2>-->
             </div>
         </div>
         <div class="row">
             <div class="col">
+                <h2 class="text-center">Répartition par actif</h2>
                 <canvas id="accountChart" width="100%" height="100%"></canvas>
+                <p ng-bind-html="accountChartLegend"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col text-center">
-                <h2 class="">
-                    Synthèse par classe d'actifs
-                </h2>
-                <div class="chartPercentage">
-                    <canvas id="homeChartCategories" width="100%" height="100%"></canvas>
-                    <p class="percentage" ng-class="(perf < 0) ? 'red' : '' "><strong ng-show="perf > 0">+</strong>{{ perf }} %<br/><span class="small"> perf. totale</span>
-                    </p>
+            <div class="col">
+                <h2>Graphique de performances</h2>
+                <div class="button-bar">
+                    <a class="button active">2016</a>
+                    <a class="button">2 ans</a>
+                    <a class="button">3 ans</a>
+                    <a class="button">5 ans</a>
                 </div>
-                <p ng-bind-html="homeChartCategoriesLegend"></p>
+                <canvas id="accountPerformanceChart" width="100%" height="100%"></canvas>
+                <p ng-bind-html="accountPerformanceChartLegend"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Dernieres transactions</h2>
+                <div class="list">
+                    <div class="item item-avatar">
+                        <i class="fa fa-arrow-up"></i>
+                        <h2>Microsoft</h2>
+                        <p class="pull-left">Position: 1070 &euro;</p>
+                        <p class="pull-right">Perf. <span class="money">+29%</span></p>
+                    </div>
+                    <div class="item item-avatar">
+                        <i class="fa fa-arrow-down red"></i>
+                        <h2>Microsoft</h2>
+                        <p class="pull-left">Position: 1070 &euro;</p>
+                        <p class="pull-right">Perf. <span class="money red">-9%</span></p>
+                    </div>
+                    <div class="item item-avatar">
+                        <i class="fa fa-arrow-down red"></i>
+                        <h2>Microsoft</h2>
+                        <p class="pull-left">Position: 1070 &euro;</p>
+                        <p class="pull-right">Perf. <span class="money red">-2%</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Mon portefeuille</h2>
+                <div class="list">
+                    <div class="item item-avatar">
+                        <h2>Apple</h2>
+                        <p>Prix actuel: 107 &euro;</p>
+                    </div>
+                    <div class="item item-avatar">
+                        <h2>Microsoft</h2>
+                        <p>Prix actuel: 102 &euro;</p>
+                    </div>
+                    <div class="item item-avatar">
+                        <h2>Google</h2>
+                        <p>Prix actuel: 1027 &euro;</p>
+                    </div>
+                    <div class="item item-avatar">
+                        <h2>Samsung</h2>
+                        <p>Prix actuel: 97 &euro;</p>
+                    </div>
+                </div>
             </div>
         </div>
     </ion-content>

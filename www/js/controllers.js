@@ -68,7 +68,7 @@ angular.module('starter.controllers', [])
         });
 
     })
-    .controller('AccountController', function(){
+    .controller('AccountController', function($scope, $http, $sgData, $rootScope, $sce){
         var data = [
             {
                 value: 300,
@@ -90,18 +90,58 @@ angular.module('starter.controllers', [])
             }
         ];
 
+        $scope.accountPerformanceChartLegend = "";
+        $scope.accountChartLegend = "";
+
         var ctx = document.getElementById("accountChart").getContext("2d");
         var accountChart = new Chart(ctx).Pie(data, {
             animateScale: true,
             tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
             multiTooltipTemplate: "<%= value %> €"
         });
+        $scope.accountChartLegend = $sce.trustAsHtml(accountChart.generateLegend());
+
+
+        var dataChart2 = {
+            labels: ["11/02/2016", "12/02/2016", "13/02/2016", "14/02/2016", "15/02/2016", "16/02/2016", "17/02/2016"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }
+            ]
+        };
+
+        var ctx = document.getElementById("accountPerformanceChart").getContext("2d");
+        var accountPerformanceChart = new Chart(ctx).Line(dataChart2, {
+            animateScale: true,
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
+            multiTooltipTemplate: "<%= value %> €"
+        });
+        $scope.accountPerformanceChartLegend = $sce.trustAsHtml(accountPerformanceChart.generateLegend());
+
 
     })
     .controller('ProductController', function(){
         $http.get("https://www.unitsupload.com/api/api.php?page=product&isin=" + getUrlVars()["isin"] ).then( function(response) {
 
-            var data2 = [];
+            var data = [];
             for (var i in response.data) {
                 data2.push({
                     isin: response.data[i].isin,
