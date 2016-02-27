@@ -184,6 +184,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'sgData'])
                         controller: 'AccountController'
                     }
                 }
+            })
+            .state('app.product', {
+                url: '/product',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/product.html',
+                        controller: 'ProductController'
+                    }
+                }
             });
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/home');
