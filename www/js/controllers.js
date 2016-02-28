@@ -1,13 +1,68 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['sgData'])
 
-    .controller('AppController', function($scope, $ionicModal, $timeout) {
-
+    .controller('AppController', function($scope, $ionicModal, $timeout, $rootScope, $localstorage) {
+        $scope.user = $localstorage.getObject('user');
 
     })
 
-    .controller('HomeController', function($scope, $http, $sgData, $rootScope, $sce)
+    .controller('LoginController', function($scope, $rootScope, $http, $state, $localstorage){
+
+        $scope.user = $localstorage.getObject('user');
+        if ($scope.user.login != undefined)
+        {
+            $state.go("app.home");
+        }
+
+        $scope.homeError = true;
+        $scope.homeErrorMEssage = "";
+        $scope.data = {};
+        $scope.data.firstName = "";
+        $scope.data.lastName = "";
+        $scope.doLogin = function()
+        {
+            $http({
+                method: 'POST',
+                url: 'https://www.unitsupload.com/api/api.php?page=login',
+                data: $scope.data
+            }).then(function(response){
+                console.log("Data rec = " + JSON.stringify(response.data));
+                if (response.data.login == true)
+                {
+                    console.log("Login ok");
+                    $localstorage.setObject('user', response.data);
+                    $scope.homeError = false;
+                    $scope.homeErrorMessage = "";
+                    $state.go("app.home");
+                    $rootScope.loggedIn = true;
+                }
+                else
+                {
+                    console.log("Login fail");
+                    $scope.homeError = true;
+                    $scope.homeErrorMessage = "Login incorrect.";
+                }
+            }, function(response){
+
+                    console.log("error");
+                    $scope.homeError = true;
+                    $scope.homeErrorMessage = "Une erreur est survenue. Veuillez reessayer plus tard.";
+            });
+        };
+    })
+
+    .controller('LogoutController', function($scope, $localstorage, $state){
+
+        console.log("Do logout");
+        $scope.user = {};
+        $localstorage.setObject('user', {});
+        $state.go("app.login");
+    })
+
+
+    .controller('HomeController', function($scope, $http, $sgData, $rootScope, $sce, $localstorage)
     {
-        $rootScope.userId = 6;
+
+        $scope.user = $localstorage.getObject('user');
 
         var data = [];
         var colors = ["#F7464A", "#46BFBD", "#FDB45C"];
@@ -16,7 +71,7 @@ angular.module('starter.controllers', [])
         $scope.homeChartLegend = "";
         $scope.homeChartCategoriesLegend = "";
 
-        $http.get("https://www.unitsupload.com/api/api.php?page=account&clientid=" + $rootScope.userId).then( function(response){
+        $http.get("https://www.unitsupload.com/api/api.php?page=account&clientid=" + $scope.user.clientid).then( function(response){
 
             var initialAmount = 0;
             for(var i in response.data)
@@ -45,7 +100,7 @@ angular.module('starter.controllers', [])
         });
 
         // Getting the second chart
-        $http.get("https://www.unitsupload.com/api/api.php?page=account_track_record_composition_categories&id=" + $rootScope.userId).then( function(response){
+        $http.get("https://www.unitsupload.com/api/api.php?page=account_track_record_composition_categories&id=" + $scope.user.clientid).then( function(response){
             console.log("Recuperation : " + response);
             var data2 = [];
             for(var i in response.data)
@@ -68,7 +123,7 @@ angular.module('starter.controllers', [])
         });
 
     })
-    .controller('AccountController', function($scope, $http, $sgData, $rootScope, $sce){
+    .controller('AccountController', function($scope, $http, $sgData, $rootScope, $sce, $localstorage){
         var data = [
             {
                 value: 300,

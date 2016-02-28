@@ -167,6 +167,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'sgData'])
                 controller: 'AppController'
             })
 
+            .state('app.login', {
+                url: '/login',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/login.html',
+                        controller: 'LoginController'
+                    }
+                }
+            })
+
+            .state('app.logout', {
+                url: '/logout',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/logout.html',
+                        controller: 'LogoutController'
+                    }
+                }
+            })
+
             .state('app.home', {
                 url: '/home',
                 views: {
@@ -193,7 +213,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'sgData'])
                         controller: 'ProductController'
                     }
                 }
-            });
+            })
+            ;
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/home');
+        $urlRouterProvider.otherwise('/app/login');
     });

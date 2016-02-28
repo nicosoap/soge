@@ -9820,3 +9820,6 @@ h2 {
     color: #ef473a !important; }
   .item-avatar .money {
     font-size: 15px; }
+
+.LoginError {
+  color: #ef473a; }
