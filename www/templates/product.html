@@ -1,9 +1,89 @@
 <ion-view view-title="Homepage">
+    <ion-nav-title></ion-nav-title>
     <ion-content class="padding">
-        <h1>Dashboard</h1>
-        <div class="col-60">{{product.nom}}</br>
-            {{product_track_record_evolution.value}}</br>
-            {{
+        <div class="row">
+            <div class="col text-center">
+                <h1>
+                    Nom produit
+                    <!--<br/>-->
+                    <!--<small>Depuis début 2016 <i class="fa fa-caret-down"></i></small>-->
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ion-list class="money-list">
+                    <ion-item>
+                        Cours
+                        <br/>
+                        <span class="pull-right money">100&euro;</span>
+                    </ion-item>
+                    <ion-item>
+                        Veille
+                        <br/>
+                        <span class="pull-right money">+1.50%</span>
+                    </ion-item>
+                    <ion-item>
+                        Zone
+                        <br/>
+                        <span class="pull-right">France</span>
+                    </ion-item>
+                    <ion-item>
+                        PEA
+                        <br/>
+                        <span class="pull-right">Oui</span>
+                    </ion-item>
+                    <ion-item>
+                        Type
+                        <br/>
+                        <span class="pull-right">Action</span>
+                    </ion-item>
+                </ion-list>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Graphique de performances</h2>
+                <div class="button-bar">
+                    <a class="button active">2016</a>
+                    <a class="button">2 ans</a>
+                    <a class="button">3 ans</a>
+                    <a class="button">5 ans</a>
+                </div>
+                <canvas id="productChart" width="100%" height="100%"></canvas>
+                <p ng-bind-html="productChartLegend"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ion-list class="money-list">
+                    <ion-item>
+                        Devise
+                        <br/>
+                        <span class="pull-right money">EURO</span>
+                    </ion-item>
+                    <ion-item>
+                        Eligible ASV
+                        <br/>
+                        <span class="pull-right money">Oui</span>
+                    </ion-item>
+                    <ion-item>
+                        Classe
+                        <br/>
+                        <span class="pull-right">Fonds</span>
+                    </ion-item>
+                    <ion-item>
+                        Société de gestion
+                        <br/>
+                        <span class="pull-right">Comgest</span>
+                    </ion-item>
+                    <ion-item>
+                        Isin
+                        <br/>
+                        <span class="pull-right">FR235234</span>
+                    </ion-item>
+                </ion-list>
+            </div>
         </div>
     </ion-content>
 </ion-view>

@@ -186,7 +186,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'sgData'])
                 }
             })
             .state('app.product', {
-                url: '/product',
+                url: '/product/:isin',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/product.html',

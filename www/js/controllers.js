@@ -46,7 +46,7 @@ angular.module('starter.controllers', [])
 
         // Getting the second chart
         $http.get("https://www.unitsupload.com/api/api.php?page=account_track_record_composition_categories&id=" + $rootScope.userId).then( function(response){
-
+            console.log("Recuperation : " + response);
             var data2 = [];
             for(var i in response.data)
             {
@@ -138,12 +138,14 @@ angular.module('starter.controllers', [])
 
 
     })
-    .controller('ProductController', function(){
-        $http.get("https://www.unitsupload.com/api/api.php?page=product&isin=" + getUrlVars()["isin"] ).then( function(response) {
+    .controller('ProductController', function($scope, $http, $sgData, $rootScope, $sce, $stateParams){
 
-            var data = [];
+
+        var data = [];
+
+        $http.get("https://www.unitsupload.com/api/api.php?page=product&isin=" + $stateParams.isin).then( function(response) {
             for (var i in response.data) {
-                data2.push({
+                data.push({
                     isin: response.data[i].isin,
                     nom: response.data[i].nom,
                     assetclass: response.data[i].assetclass,
@@ -153,17 +155,47 @@ angular.module('starter.controllers', [])
                     zone: response.data[i].zone,
                     devise: response.data[i].devise,
                     management: response.data[i].management,
-                    description: response.data[i].description,
+                    description: response.data[i].description
                 });
             }
+        }, function(response)
+        {
+            console.log("Error product api");
         });
 
-        var ctx = document.getElementById("accountChart").getContext("2d");
-        var accountChart = new Chart(ctx).Pie(data, {
+        var dataChart = {
+            labels: ["11/02/2016", "12/02/2016", "13/02/2016", "14/02/2016", "15/02/2016", "16/02/2016", "17/02/2016"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }
+            ]
+        };
+
+        var ctx = document.getElementById("productChart").getContext("2d");
+        var productChart = new Chart(ctx).Line(dataChart, {
             animateScale: true,
             tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
             multiTooltipTemplate: "<%= value %> €"
         });
+        $scope.productChartLegend = $sce.trustAsHtml(productChart.generateLegend());
 
     })
 ;
