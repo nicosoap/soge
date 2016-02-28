@@ -1,0 +1,20 @@
+<ion-view view-title="" name="login-view">
+    <ion-content class="padding">
+        <div class="row">
+            <div class="col">
+                <h1>Mes comptes</h1>
+                <div class="list">
+                    <div class="item item-avatar" ng-repeat="account in accounts">
+                        <i class="fa fa-arrow-up" ng-show="account.account_finalamount > account.account_initialamount"></i>
+                        <i class="fa fa-arrow-down red" ng-show="account.account_finalamount <= account.account_initialamount"></i>
+                        <h2>{{ account.account_type }}</h2>
+                        <p class="pull-left">Position {{ account.account_finalamount|currency : "" }} &euro;</p>
+                        <p class="pull-right">
+                            <a ui-sref="app.account({'accountId': account.account_id})" class="button" style="color: #ffffff;"><i class="fa fa-eye" style="color: #ffffff;"></i> Voir</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

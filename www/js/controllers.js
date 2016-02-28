@@ -50,6 +50,47 @@ angular.module('starter.controllers', ['sgData'])
         };
     })
 
+    .controller('AccountsController', function($scope, $localstorage, $state, $http){
+
+        $scope.user = $localstorage.getObject('user');
+        if ($scope.user.login == undefined)
+        {
+            $state.go("app.login");
+        }
+        $scope.accounts = [];
+        $http.get("https://www.unitsupload.com/api/api.php?page=account&clientid=" + $scope.user.clientid).then(function(response){
+
+            $scope.accounts = response.data;
+
+        }, function(response){
+            console.log("Get accounts error");
+        });
+    })
+
+    .controller('ProductsController', function($scope, $localstorage, $state, $http){
+
+        $scope.user = $localstorage.getObject('user');
+        if ($scope.user.login == undefined)
+        {
+            $state.go("app.login");
+        }
+        $scope.products = [];
+        $http.get("https://www.unitsupload.com/api/api.php?page=product").then(function(response){
+
+            //for (var i in response.data)
+            //{
+            //    if (response.data[i].isin = $scope.user.isin)
+            //    {
+            //        $scope.products.push(response.data[i]);
+            //    }
+            //}
+            $scope.products = response.data;
+        }, function(response){
+            console.log("Get accounts error");
+        });
+    })
+
+
     .controller('LogoutController', function($scope, $localstorage, $state){
 
         console.log("Do logout");
@@ -59,10 +100,15 @@ angular.module('starter.controllers', ['sgData'])
     })
 
 
-    .controller('HomeController', function($scope, $http, $sgData, $rootScope, $sce, $localstorage)
+    .controller('HomeController', function($scope, $http, $sgData, $rootScope, $sce, $localstorage, $state)
     {
 
+
         $scope.user = $localstorage.getObject('user');
+        if ($scope.user.login == undefined)
+        {
+            $state.go("app.login");
+        }
 
         var data = [];
         var colors = ["#F7464A", "#46BFBD", "#FDB45C"];
@@ -121,47 +167,58 @@ angular.module('starter.controllers', ['sgData'])
         }, function(response){
             console.log("Error chart 2");
         });
-
     })
-    .controller('AccountController', function($scope, $http, $sgData, $rootScope, $sce, $localstorage){
-        var data = [
-            {
-                value: 300,
-                color:"#F7464A",
-                highlight: "#FF5A5E",
-                label: "Red"
-            },
-            {
-                value: 50,
-                color: "#46BFBD",
-                highlight: "#5AD3D1",
-                label: "Green"
-            },
-            {
-                value: 100,
-                color: "#FDB45C",
-                highlight: "#FFC870",
-                label: "Yellow"
-            }
-        ];
+    .controller('AccountController', function($scope, $http, $sgData, $rootScope, $sce, $localstorage, $stateParams, $state){
 
-        $scope.accountPerformanceChartLegend = "";
-        $scope.accountChartLegend = "";
+        $scope.user = $localstorage.getObject('user');
+        if ($scope.user.login == undefined)
+        {
+            $state.go("app.login");
+        }
 
-        var ctx = document.getElementById("accountChart").getContext("2d");
-        var accountChart = new Chart(ctx).Pie(data, {
-            animateScale: true,
-            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
-            multiTooltipTemplate: "<%= value %> €"
+        $scope.account = {};
+        $scope.chartData = [];
+        var colors = ["#2ecc71", "#2980b9", "#8e44ad", "#34495e", "#f39c12", "#d35400", "#c0392b", "#7f8c8d"];
+        $http.get("https://www.unitsupload.com/api/api.php?page=account&id=" + $stateParams.accountId).then(function(response){
+            $scope.account = response.data[0];
+            console.log("We have the account id...");
+            $http.get("https://www.unitsupload.com/api/api.php?page=account_analytics&id=" + $stateParams.accountId).then(function(response){
+                for (var i in response.data)
+                {
+                    console.log("Amount = " + response.data[i].amount);
+                    $scope.chartData.push({
+                       value: parseFloat(response.data[i].amount).toFixed(2),
+                        color: colors[i],
+                        label: response.data[i].product_nom
+                    });
+                }
+
+                $scope.accountPerformanceChartLegend = "";
+                $scope.accountChartLegend = "";
+
+                console.log("Data chart = " + JSON.stringify($scope.chartData));
+
+                var ctx = document.getElementById("accountChart").getContext("2d");
+                var accountChart = new Chart(ctx).Pie($scope.chartData, {
+                    animateScale: true,
+                    tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> €",
+                    multiTooltipTemplate: "<%= value %> €"
+                });
+                $scope.accountChartLegend = $sce.trustAsHtml(accountChart.generateLegend());
+            }, function(){
+                console.log("Error 2");
+            });
+
+        }, function(){
+            console.log("Error account g1");
         });
-        $scope.accountChartLegend = $sce.trustAsHtml(accountChart.generateLegend());
 
 
         var dataChart2 = {
-            labels: ["11/02/2016", "12/02/2016", "13/02/2016", "14/02/2016", "15/02/2016", "16/02/2016", "17/02/2016"],
+            labels: ["FEV", "AVR", "JUI", "AOU", "OCT", "DEC", "FEV"],
             datasets: [
                 {
-                    label: "My First dataset",
+                    label: "",
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgba(220,220,220,1)",
@@ -171,7 +228,7 @@ angular.module('starter.controllers', ['sgData'])
                     data: [65, 59, 80, 81, 56, 55, 40]
                 },
                 {
-                    label: "My Second dataset",
+                    label: "",
                     fillColor: "rgba(151,187,205,0.2)",
                     strokeColor: "rgba(151,187,205,1)",
                     pointColor: "rgba(151,187,205,1)",
@@ -193,8 +250,13 @@ angular.module('starter.controllers', ['sgData'])
 
 
     })
-    .controller('ProductController', function($scope, $http, $sgData, $rootScope, $sce, $stateParams){
+    .controller('ProductController', function($scope, $http, $sgData, $rootScope, $sce, $stateParams, $state, $localstorage){
 
+        $scope.user = $localstorage.getObject('user');
+        if ($scope.user.login == undefined)
+        {
+            $state.go("app.login");
+        }
 
         var data = [];
 
@@ -219,10 +281,10 @@ angular.module('starter.controllers', ['sgData'])
         });
 
         var dataChart = {
-            labels: ["11/02/2016", "12/02/2016", "13/02/2016", "14/02/2016", "15/02/2016", "16/02/2016", "17/02/2016"],
+            labels: ["FEV", "AVR", "JUI", "AOU", "OCT", "DEC", "FEV"],
             datasets: [
                 {
-                    label: "My First dataset",
+                    label: "Benchmark",
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgba(220,220,220,1)",
@@ -232,7 +294,7 @@ angular.module('starter.controllers', ['sgData'])
                     data: [65, 59, 80, 81, 56, 55, 40]
                 },
                 {
-                    label: "My Second dataset",
+                    label: "Apple",
                     fillColor: "rgba(151,187,205,0.2)",
                     strokeColor: "rgba(151,187,205,1)",
                     pointColor: "rgba(151,187,205,1)",

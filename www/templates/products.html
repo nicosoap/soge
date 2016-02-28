@@ -1,0 +1,18 @@
+<ion-view view-title="" name="login-view">
+    <ion-content class="padding">
+        <div class="row">
+            <div class="col">
+                <h1>Mes produits</h1>
+                <div class="list">
+                    <div class="item item-avatar" ng-repeat="product in products">
+                        <h2>{{ product.nom }}</h2>
+                        <p class="pull-left">ISIN {{ account.isin }} &euro;</p>
+                        <p class="pull-right">
+                            <a ui-sref="app.account({'isin': product.isin})" class="button" style="color: #ffffff;"><i class="fa fa-eye" style="color: #ffffff;"></i> Voir</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

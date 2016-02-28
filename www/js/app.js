@@ -157,7 +157,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'sgData'])
 
     })
 
-    .config(function($stateProvider, $urlRouterProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+        $ionicConfigProvider.views.maxCache(0);
+
+
         $stateProvider
 
             .state('app', {
@@ -197,7 +201,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'sgData'])
                 }
             })
             .state('app.account', {
-                url: '/account',
+                url: '/account/:accountId',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/account.html',
@@ -205,6 +209,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'sgData'])
                     }
                 }
             })
+
+            .state('app.accounts', {
+                url: '/accounts',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/accounts.html',
+                        controller: 'AccountsController'
+                    }
+                }
+            })
+
+
+            .state('app.products', {
+                url: '/products',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/products.html',
+                        controller: 'ProductsController'
+                    }
+                }
+            })
+
             .state('app.product', {
                 url: '/product/:isin',
                 views: {
